@@ -1,0 +1,77 @@
+package se.kth.iv1350.repairElectricBike.model;
+
+import java.util.*;
+
+/**
+ * The center of the scenario for the model. 
+ * Handles operations concerning the repair order and is used through controller frequently.
+ * 
+ */
+public class RepairOrder {
+    private String problemDescription;
+    private RepairOrderStatus status;
+    private Customer customer;
+    private DiagnosticReport diagnosticReport;
+    private List<RepairTask> repairTaskList;
+
+    /**
+     * Creates an instance of RepairOrder, no diagnosticReport or status.
+     * 
+     * @param customer is the scenarios customer, created in view (for now).
+     * 
+     */
+    public RepairOrder(Customer customer, String problemDescription){
+        this.customer = customer;
+        this.problemDescription = problemDescription;
+        this.repairTaskList = new ArrayList<>();
+    }
+
+    /**
+     * Changes the status field of the RepairOrder object.
+     * 
+     * @param repairOrderStatus Should be a String matching something in the enumeration.
+     * 
+     */
+    public void setRepairOrderStatus(String repairOrderStatus){
+        
+        if(repairOrderStatus.equals("NEWLY_CREATED")){
+            this.status = RepairOrderStatus.NEWLY_CREATED;
+        } else if(repairOrderStatus.equals("READY_FOR_APPROVAL")){
+            this.status = RepairOrderStatus.READY_FOR_APPROVAL;
+        } else if(repairOrderStatus.equals("APPROVED")){
+            this.status = RepairOrderStatus.APPROVED;
+        } else if(repairOrderStatus.equals("REJECTED")){
+            this.status = RepairOrderStatus.REJECTED;
+        } else if(repairOrderStatus.equals("COMPLETED")){
+            this.status = RepairOrderStatus.COMPLETED;
+        } else{
+            System.out.println("Unknown status: " + repairOrderStatus);
+        }
+    }
+
+    
+    public void setDiagnosticReport(DiagnosticReport diagnosticReport){
+        this.diagnosticReport = diagnosticReport;
+    }
+
+    /**
+     * Adds a RepairTask object to the repairTaskList.
+     * 
+     */
+    public void addRepairTask(RepairTask repairTask){
+        this.repairTaskList.add(repairTask);
+    }
+
+    public Customer getCustomer(){
+        return this.customer;
+    }
+
+    public String getProblemDescription(){
+        return this.problemDescription;
+    }
+
+    public List<RepairTask> getRepairTaskList(){
+        return this.repairTaskList;
+    }
+
+}

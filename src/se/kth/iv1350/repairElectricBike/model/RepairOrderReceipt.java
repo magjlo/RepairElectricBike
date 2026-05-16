@@ -26,7 +26,10 @@ public class RepairOrderReceipt {
 
     public void createReceipt(RepairOrder repairOrder){
         
-        this.receipt.append("---Repair Order---")
+        this.receipt.append("-----REPAIR ORDER RECEIPT-----")
+        .append("\n---Repair Order---")
+        .append("\n"+repairOrder.toString())
+        .append("\n"+repairOrder.getCreationDate())
         .append("\nCustomer details:")
         .append(repairOrder.getCustomerDTO().toString())
         .append("\n---Repair Tasks and Costs---");

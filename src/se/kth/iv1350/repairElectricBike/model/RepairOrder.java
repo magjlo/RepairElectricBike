@@ -58,6 +58,25 @@ public class RepairOrder {
         }
     }
 
+    @Override
+    public String toString(){
+        StringBuilder builder = new StringBuilder();
+        builder.append("Repair Order ID: " + repairOrderId + "\n");
+        builder.append("Customer Name: " + customerDTO.getCustomerName() + "\n");
+        builder.append("Problem Description: " + problemDescription + "\n");
+        for(int i = 0; i < repairTaskList.size(); i++){
+            RepairTask task = repairTaskList.get(i);
+            builder.append("Repair Task " + (i+1) + ": " + task.getTaskDescription() + ", Cost: " + task.getCost() + "\n");
+        }
+        return builder.toString();
+    }
+
+     /**
+     * Sets the diagnostic report field of RepairOrder.
+     * 
+     * @param diagnosticReport is created in controller and added to the order after technician's diagnosis.
+     * 
+     */
     
     public void setDiagnosticReport(DiagnosticReport diagnosticReport){
         this.diagnosticReport = diagnosticReport;

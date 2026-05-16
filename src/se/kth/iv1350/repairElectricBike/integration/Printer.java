@@ -30,4 +30,8 @@ public class Printer {
     public void printRepairOrderReceipt(RepairOrderReceipt repairOrderReceipt){
         System.out.println(this.repairOrderReceipt.getReceipt().toString());
     }
+
+    public RepairOrderReceipt getRepairOrderReceipt(){
+        return this.repairOrderReceipt;
+    }
 }

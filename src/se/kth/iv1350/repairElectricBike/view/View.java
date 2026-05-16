@@ -1,9 +1,7 @@
 package se.kth.iv1350.repairElectricBike.view;
 
-import java.util.Arrays;
-import java.util.List;
-
-import se.kth.iv1350.repairElectricBike.controller.*;
+import se.kth.iv1350.repairElectricBike.controller.Controller;
+import java.util.*;
 
 /**
  * Placeholder class for view as it does not exist yet.
@@ -28,7 +26,11 @@ public class View {
      * 
      */
     public void sampleExecution(){
-        
-        
+        System.out.println(contr.findCustomerByPhoneNumber("0701234567").toString());
+        contr.confirmCustomerDetails(true);
+        String repairOrderId = contr.createInitialRepairOrderByProblemDescription("The bike has a broken brake.");
+        contr.updateRepairOrder("Sample diagnostic report", Arrays.asList(100.0f, 200.0f), Arrays.asList("Replace brake pads", "Replace brake cables"));
+        System.out.println(contr.findRepairOrderById(repairOrderId).toString());
+        contr.approveRepairOrder();
     }
 }

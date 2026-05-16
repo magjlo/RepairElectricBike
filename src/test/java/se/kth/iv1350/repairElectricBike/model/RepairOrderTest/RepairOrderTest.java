@@ -7,13 +7,15 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import se.kth.iv1350.repairElectricBike.dataTransferObjects.CustomerDTO;
+import se.kth.iv1350.repairElectricBike.dataTransferObjects.ElectricBikeDTO;
 import se.kth.iv1350.repairElectricBike.model.*;
 
 
-
 public class RepairOrderTest {
-    private ElectricBike electricBike;
-    private Customer customer;
+    private ElectricBikeDTO electricBike;
+    private CustomerDTO customer;
     private RepairOrder repairOrder;
     private RepairOrderStatus status;
 
@@ -30,8 +32,8 @@ public class RepairOrderTest {
     @Before
     public void prepareEach(){
         
-        electricBike = new ElectricBike("brand", "model", "Serial number");
-        customer = new Customer("number", electricBike, "Email", "Name");
+        electricBike = new ElectricBikeDTO("brand", "model", "Serial number");
+        customer = new CustomerDTO("number", "Email", "Name", electricBike);
         repairOrder = new RepairOrder(customer, "Any description.");
     }
 

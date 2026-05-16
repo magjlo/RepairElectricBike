@@ -46,13 +46,15 @@ public class Controller {
 
     /**
     * Finds a customer object stored in CustomerRegistry using string phonenumber.
+    * Subsequently returns the found customer details as a CustomerDTO object.
     * 
     * @param phoneNumber is a field in the Customer class and is provided by View.
     * 
     */
 
-    public void findCustomerByPhoneNumber(String phoneNumber){
+    public CustomerDTO findCustomerByPhoneNumber(String phoneNumber){
         this.customerDTO = customerRegistry.findCustomer(phoneNumber);
+        return getCustomerDTO();
     }
 
     /**
@@ -64,15 +66,16 @@ public class Controller {
     * 
     */
 
-    public boolean confirmCustomerDetails(CustomerDTO customerDTO){
-        if(customerDTO.equals(this.customerDTO)){
-            return true;
+    public void confirmCustomerDetails(Boolean areDetailsCorrect){
+        if(areDetailsCorrect){
+            System.out.println("Customer details confirmed.");
+        } else {
+            System.out.println("Customer details are not correct.");
         }
-        return false;
     }
 
     /**
-    * Method is responsible for creating the initial repair order.
+    * Method is responsible for creating the initial repair order. The method returns a unique order ID.
     * 
     * @param problemDescription describes the problem with the bike and is a field of RepairOrder
     * only after customer is found in customer registry.
@@ -81,9 +84,10 @@ public class Controller {
     * 
     */
 
-    public void createInitialRepairOrderByProblemDescription(String problemDescription){
+    public String createInitialRepairOrderByProblemDescription(String problemDescription){
        this.repairOrder = new RepairOrder(this.customerDTO, problemDescription);
        repairOrder.setRepairOrderStatus("NEWLY_CREATED");
+       return repairOrder.getRepairOrderId();
     }
 
     /**
@@ -117,7 +121,7 @@ public class Controller {
    
     public void updateRepairOrder(String reportText, List<Float> costList, List<String> taskDescriptionList){
         
-        repairOrder.setDiagnosticReport(new DiagnosticReport(reportText));
+        getRepairOrder().setDiagnosticReport(new DiagnosticReport(reportText));
         for(int i = 0; i < costList.size(); i++){
             Float cost = costList.get(i);
             String taskDescription = taskDescriptionList.get(i);
@@ -150,7 +154,8 @@ public class Controller {
      * 
      */
     private void initializeRepairOrderReceipt(){
-        repairOrderReceipt.createReceipt(repairOrder);
+        this.repairOrderReceipt = printer.getRepairOrderReceipt();
+        repairOrderReceipt.createReceipt(this.repairOrder);
     }
 
     /**
@@ -159,6 +164,10 @@ public class Controller {
     */
     private void saveRepairOrderToRegistry(){
         this.repairOrderRegistry.addRepairOrder(this.repairOrder);
+    }
+
+    public CustomerDTO getCustomerDTO(){
+       return this.customerDTO;
     }
 
     public RepairOrder getRepairOrder(){

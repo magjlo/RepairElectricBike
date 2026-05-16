@@ -5,6 +5,8 @@ import se.kth.iv1350.repairElectricBike.integration.Printer;
 import se.kth.iv1350.repairElectricBike.integration.RepairOrderRegistry;
 import se.kth.iv1350.repairElectricBike.model.RepairOrderReceipt;
 import se.kth.iv1350.repairElectricBike.controller.Controller;
+import se.kth.iv1350.repairElectricBike.dataTransferObjects.CustomerDTO;
+import se.kth.iv1350.repairElectricBike.dataTransferObjects.ElectricBikeDTO;
 import se.kth.iv1350.repairElectricBike.view.View;
 
 /**
@@ -25,6 +27,9 @@ public class Main {
         
         RepairOrderRegistry repairOrderRegistry = new RepairOrderRegistry();
         CustomerRegistry customerRegistry = new CustomerRegistry();
+        ElectricBikeDTO electricBikeDTO = new ElectricBikeDTO("Trek", "Madone", "SN123456789");
+        CustomerDTO customerDTO = new CustomerDTO("0701234567", "John.Doe@gmail.com", "John Doe", electricBikeDTO);
+        customerRegistry.addCustomer(customerDTO);
         Printer printer = new Printer(new RepairOrderReceipt());
         Controller contr = new Controller(repairOrderRegistry, customerRegistry, printer);
         new View(contr).sampleExecution();

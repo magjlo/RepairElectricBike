@@ -31,24 +31,6 @@ public class View {
      */
     public void sampleExecution(){
         
-        ElectricBike electricBike = new ElectricBike("brand", "model", "Serial number");
-        Customer customer = new Customer("number", electricBike, "Email", "Name");
-        contr.getCustomerRegistry().addCustomer(customer);
-
-        List<String> taskDescriptionList = Arrays.asList("item1", "item2", "item3");
-        List<Float> costList = Arrays.asList(1f, 2f, 3f);
-        contr.enterPhoneNumber("number");
-
-        System.out.println("Correct customer: " + contr.confirmCustomerDetails(customer));
         
-        contr.enterProblemDescription("any problem");
-
-        contr.updateRepairOrder("Hello", costList, taskDescriptionList);
-
-        contr.approveRepairOrder();
-
-        contr.addRepairOrderToRegistry();
-
-        contr.printRepairOrder();
     }
 }

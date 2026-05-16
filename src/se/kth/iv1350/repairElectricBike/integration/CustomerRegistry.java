@@ -18,7 +18,7 @@ public class CustomerRegistry {
      * 
      */
 
-    public CustomerRegistry(List<Customer> customerList){
+    public CustomerRegistry(){
         this.customerList = new ArrayList<>();
     }
 

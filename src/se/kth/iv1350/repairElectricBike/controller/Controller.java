@@ -50,7 +50,7 @@ public class Controller {
     * 
     */
 
-    public void enterPhoneNumber(String phoneNumber){
+    public void findCustomerByPhoneNumber(String phoneNumber){
         this.customer = customerRegistry.findCustomer(phoneNumber);
     }
 
@@ -80,9 +80,33 @@ public class Controller {
     * 
     */
 
-    public void enterProblemDescription(String problemDescription){
+    public void createInitialRepairOrderByProblemDescription(String problemDescription){
        this.repairOrder = new RepairOrder(this.customer, problemDescription);
        repairOrder.setRepairOrderStatus("NEWLY_CREATED");
+    }
+
+    /**
+     * 
+     * @return
+     */
+
+    public RepairOrder getCurrentRepairOrder(){
+        return this.repairOrder;
+    }
+
+    /**
+     * 
+     * @param repairOrderId
+     * @return
+     */
+    public RepairOrder findRepairOrderById(String repairOrderId){
+        
+        for(RepairOrder repairOrder : this.repairOrderRegistry.getRepairOrderList()){
+            if(Objects.equals(repairOrder.getRepairOrderId(), repairOrderId)){
+                return repairOrder;
+            }
+        }
+        return null;
     }
 
     /**
@@ -117,15 +141,6 @@ public class Controller {
     }
 
     /**
-    * Saves a RepairOrder object to the RepairOrderRegistry, never delete.
-    * 
-    */
-
-    public void addRepairOrderToRegistry(){
-        this.repairOrderRegistry.addRepairOrder(this.repairOrder);
-    }
-
-    /**
     * Fetches and @return a RepairOrderReceipt object containing Problem description, customer, bike, 
     * task list and cost details.
     * 
@@ -140,11 +155,20 @@ public class Controller {
     * Prints the RepairOrderReceipt from <code>fetchReceipt()</code> to the console (System.Out)
     * 
     */
-
     public void printRepairOrder(){
         this.printer.printRepairOrderReceipt(fetchReceipt());
     }
 
+    /**
+    * Saves a RepairOrder object to the RepairOrderRegistry, never delete.
+    * 
+    */
+
+    public void addRepairOrderToRegistry(){
+        this.repairOrderRegistry.addRepairOrder(this.repairOrder);
+    }
+
+    
     /**
     **/
     public void setRepairOrderAsComplete(){
@@ -164,5 +188,6 @@ public class Controller {
     public RepairOrderRegistry getRepairOrderRegistry(){
         return this.repairOrderRegistry;
     }
+
 }
 

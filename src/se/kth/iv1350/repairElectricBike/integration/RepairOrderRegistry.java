@@ -17,7 +17,7 @@ public class RepairOrderRegistry {
      * @param repairOrderList is an empty list of RepairOrder object type.
      * 
      */
-    public RepairOrderRegistry(List<RepairOrder> repairOrderList){
+    public RepairOrderRegistry(){
         this.repairOrderList = new ArrayList<>();
     }
 
@@ -29,5 +29,9 @@ public class RepairOrderRegistry {
      */
     public void addRepairOrder(RepairOrder repairOrder){
         this.repairOrderList.add(repairOrder);
+    }
+
+    public List<RepairOrder> getRepairOrderList(){
+        return this.repairOrderList;
     }
 }

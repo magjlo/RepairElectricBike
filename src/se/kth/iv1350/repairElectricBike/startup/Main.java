@@ -23,8 +23,8 @@ public class Main {
      */
     public static void main(String[] args){
         
-        RepairOrderRegistry repairOrderRegistry = new RepairOrderRegistry(null);
-        CustomerRegistry customerRegistry = new CustomerRegistry(null);
+        RepairOrderRegistry repairOrderRegistry = new RepairOrderRegistry();
+        CustomerRegistry customerRegistry = new CustomerRegistry();
         Printer printer = new Printer(new RepairOrderReceipt(null));
         Controller contr = new Controller(repairOrderRegistry, customerRegistry, printer);
         new View(contr).sampleExecution();

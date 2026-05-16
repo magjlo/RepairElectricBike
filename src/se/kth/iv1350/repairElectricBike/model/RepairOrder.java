@@ -1,6 +1,7 @@
 package se.kth.iv1350.repairElectricBike.model;
 
 import java.util.*;
+import java.time.LocalDateTime;;
 
 /**
  * The center of the scenario for the model. 
@@ -9,6 +10,8 @@ import java.util.*;
  */
 public class RepairOrder {
     private String problemDescription;
+    private String creationDate;
+    public String repairOrderId;
     private RepairOrderStatus status;
     private Customer customer;
     private DiagnosticReport diagnosticReport;
@@ -23,6 +26,8 @@ public class RepairOrder {
     public RepairOrder(Customer customer, String problemDescription){
         this.customer = customer;
         this.problemDescription = problemDescription;
+        this.repairOrderId = generateUniqueRepairOrderId();
+        this.creationDate = LocalDateTime.now().toString();
         this.repairTaskList = new ArrayList<>();
     }
 
@@ -62,6 +67,10 @@ public class RepairOrder {
         this.repairTaskList.add(repairTask);
     }
 
+    private String generateUniqueRepairOrderId(){
+        return UUID.randomUUID().toString();
+    }
+
     public Customer getCustomer(){
         return this.customer;
     }
@@ -74,4 +83,11 @@ public class RepairOrder {
         return this.repairTaskList;
     }
 
+    public String getCreationDate(){
+        return this.creationDate;
+    }
+
+    public String getRepairOrderId(){
+        return this.repairOrderId;
+    }
 }

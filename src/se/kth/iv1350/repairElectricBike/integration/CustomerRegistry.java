@@ -2,14 +2,14 @@ package se.kth.iv1350.repairElectricBike.integration;
 
 import java.util.ArrayList;
 import java.util.List;
-import se.kth.iv1350.repairElectricBike.model.Customer;
+import se.kth.iv1350.repairElectricBike.dataTransferObjects.*;;
 /** 
  * CustomerRegistry which stores instances of Customer objects.
  * Is created on startup.
  * 
 */
 public class CustomerRegistry {
-    private List<Customer> customerList;
+    private List<CustomerDTO> customerDTOList;
 
     /**
      * Creates an instance/object of CustomerRegistry.
@@ -19,7 +19,7 @@ public class CustomerRegistry {
      */
 
     public CustomerRegistry(){
-        this.customerList = new ArrayList<>();
+        this.customerDTOList = new ArrayList<>();
     }
 
     /**
@@ -29,8 +29,8 @@ public class CustomerRegistry {
      * 
      */
 
-    public void addCustomer(Customer customer){
-        this.customerList.add(customer);
+    public void addCustomer(CustomerDTO customerDTO){
+        this.customerDTOList.add(customerDTO);
     }
 
     /**
@@ -41,11 +41,11 @@ public class CustomerRegistry {
      * @return Is a null value if a customer is not found.
      * 
      */
-    public Customer findCustomer(String phoneNumber){
+    public CustomerDTO findCustomer(String phoneNumber){
 
-        for(Customer customer : this.customerList){
-            if(customer.getPhoneNumber().equals(phoneNumber)){
-                return customer;
+        for(CustomerDTO customerDTO : this.customerDTOList){
+            if(customerDTO.getPhoneNumber().equals(phoneNumber)){
+                return customerDTO;
             }
         }
         return null;

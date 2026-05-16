@@ -13,8 +13,28 @@ public class RepairOrderReceipt {
      * @param receipt is a Stringbuilder, could potentially be replaced by an attribute list.
      * 
      */
-    public RepairOrderReceipt(StringBuilder receipt){
+    public RepairOrderReceipt(){
         this.receipt = new StringBuilder();
+    }
+
+    /**
+     * Creates the receipt by appending relevant information onto repairOrderReceipt.
+     * 
+     * @param repairOrder is the source of all information appended onto repairOrderReceipt.
+     * 
+     */
+
+    public void createReceipt(RepairOrder repairOrder){
+        
+        this.receipt.append("---Repair Order---")
+        .append("\nCustomer details:")
+        .append(repairOrder.getCustomerDTO().toString())
+        .append("\n---Repair Tasks and Costs---");
+        
+        for(RepairTask repairTask : repairOrder.getRepairTaskList()){
+            this.receipt.append("\n\tTask description: ").append(repairTask.getTaskDescription())
+                .append(" Cost: ").append(repairTask.getCost());
+        }
     }
 
     public StringBuilder getReceipt(){

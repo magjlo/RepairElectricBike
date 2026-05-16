@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import se.kth.iv1350.repairElectricBike.controller.*;
-import se.kth.iv1350.repairElectricBike.model.Customer;
-import se.kth.iv1350.repairElectricBike.model.ElectricBike;
 
 /**
  * Placeholder class for view as it does not exist yet.

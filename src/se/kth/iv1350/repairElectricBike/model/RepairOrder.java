@@ -1,5 +1,6 @@
 package se.kth.iv1350.repairElectricBike.model;
 
+import se.kth.iv1350.repairElectricBike.dataTransferObjects.CustomerDTO;
 import java.util.*;
 import java.time.LocalDateTime;;
 
@@ -11,9 +12,9 @@ import java.time.LocalDateTime;;
 public class RepairOrder {
     private String problemDescription;
     private String creationDate;
-    public String repairOrderId;
+    private String repairOrderId;
     private RepairOrderStatus status;
-    private Customer customer;
+    private CustomerDTO customerDTO;
     private DiagnosticReport diagnosticReport;
     private List<RepairTask> repairTaskList;
 
@@ -23,8 +24,8 @@ public class RepairOrder {
      * @param customer is the scenarios customer, created in view (for now).
      * 
      */
-    public RepairOrder(Customer customer, String problemDescription){
-        this.customer = customer;
+    public RepairOrder(CustomerDTO customer, String problemDescription){
+        this.customerDTO = customer;
         this.problemDescription = problemDescription;
         this.repairOrderId = generateUniqueRepairOrderId();
         this.creationDate = LocalDateTime.now().toString();
@@ -49,7 +50,10 @@ public class RepairOrder {
             this.status = RepairOrderStatus.REJECTED;
         } else if(repairOrderStatus.equals("COMPLETED")){
             this.status = RepairOrderStatus.COMPLETED;
-        } else{
+        } else if(repairOrderStatus.equals("PAID")){
+            this.status = RepairOrderStatus.PAID;
+        }
+        else{
             System.out.println("Unknown status: " + repairOrderStatus);
         }
     }
@@ -71,8 +75,8 @@ public class RepairOrder {
         return UUID.randomUUID().toString();
     }
 
-    public Customer getCustomer(){
-        return this.customer;
+    public CustomerDTO getCustomerDTO(){
+        return this.customerDTO;
     }
 
     public String getProblemDescription(){

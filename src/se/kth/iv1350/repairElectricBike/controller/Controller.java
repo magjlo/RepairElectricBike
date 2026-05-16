@@ -4,7 +4,7 @@ import java.util.*;
 import se.kth.iv1350.repairElectricBike.integration.RepairOrderRegistry;
 import se.kth.iv1350.repairElectricBike.integration.CustomerRegistry;
 import se.kth.iv1350.repairElectricBike.integration.Printer;
-import se.kth.iv1350.repairElectricBike.model.Customer;
+import se.kth.iv1350.repairElectricBike.dataTransferObjects.*;
 import se.kth.iv1350.repairElectricBike.model.RepairOrder;
 import se.kth.iv1350.repairElectricBike.model.RepairOrderReceipt;
 import se.kth.iv1350.repairElectricBike.model.RepairTask;
@@ -20,8 +20,9 @@ public class Controller {
     private RepairOrderRegistry repairOrderRegistry;
     private CustomerRegistry customerRegistry;
     private Printer printer;
-    private Customer customer;
+    private CustomerDTO customerDTO;
     private RepairOrder repairOrder;
+    private RepairOrderReceipt repairOrderReceipt;
 
     /**
     * Creates a new instance of controller
@@ -51,7 +52,7 @@ public class Controller {
     */
 
     public void findCustomerByPhoneNumber(String phoneNumber){
-        this.customer = customerRegistry.findCustomer(phoneNumber);
+        this.customerDTO = customerRegistry.findCustomer(phoneNumber);
     }
 
     /**
@@ -63,8 +64,8 @@ public class Controller {
     * 
     */
 
-    public boolean confirmCustomerDetails(Customer customer){
-        if(customer.equals(this.customer)){
+    public boolean confirmCustomerDetails(CustomerDTO customerDTO){
+        if(customerDTO.equals(this.customerDTO)){
             return true;
         }
         return false;
@@ -81,23 +82,15 @@ public class Controller {
     */
 
     public void createInitialRepairOrderByProblemDescription(String problemDescription){
-       this.repairOrder = new RepairOrder(this.customer, problemDescription);
+       this.repairOrder = new RepairOrder(this.customerDTO, problemDescription);
        repairOrder.setRepairOrderStatus("NEWLY_CREATED");
     }
 
     /**
+     * Returns a RepairOrder object associated with a given repairOrderId.
      * 
-     * @return
-     */
-
-    public RepairOrder getCurrentRepairOrder(){
-        return this.repairOrder;
-    }
-
-    /**
+     * @param repairOrderId is a unique string associated with a single repair order.
      * 
-     * @param repairOrderId
-     * @return
      */
     public RepairOrder findRepairOrderById(String repairOrderId){
         
@@ -118,6 +111,8 @@ public class Controller {
     * 
     * @param taskDescriptionList is an Arraylist of taskDescription that describes the necessary fixes (tasks).
     * 
+    * The method also saves the repair order to the repair order registry
+    * 
     */
    
     public void updateRepairOrder(String reportText, List<Float> costList, List<String> taskDescriptionList){
@@ -129,26 +124,16 @@ public class Controller {
             repairOrder.addRepairTask(new RepairTask(cost, taskDescription));
         }
         repairOrder.setRepairOrderStatus("READY_FOR_APPROVAL");
+        saveRepairOrderToRegistry();
     }
 
     /**
-    * Sets status of RepairOrder object to APPROVED.
+    * Sets status of RepairOrder object to APPROVED and Prints repair order.
     * 
     */
-
     public void approveRepairOrder(){
         repairOrder.setRepairOrderStatus("APPROVED");
-    }
-
-    /**
-    * Fetches and @return a RepairOrderReceipt object containing Problem description, customer, bike, 
-    * task list and cost details.
-    * 
-    */
-   
-    public RepairOrderReceipt fetchReceipt(){
-        RepairOrderReceipt receipt = printer.returnRepairOrderReceipt(this.repairOrder);
-        return receipt;
+        printRepairOrder();
     }
 
     /**
@@ -156,30 +141,29 @@ public class Controller {
     * 
     */
     public void printRepairOrder(){
-        this.printer.printRepairOrderReceipt(fetchReceipt());
+        initializeRepairOrderReceipt();
+        this.printer.printRepairOrderReceipt(repairOrderReceipt);
+    }
+
+    /**
+     * Initializes the receipt based on the current repair order.
+     * 
+     */
+    private void initializeRepairOrderReceipt(){
+        repairOrderReceipt.createReceipt(repairOrder);
     }
 
     /**
     * Saves a RepairOrder object to the RepairOrderRegistry, never delete.
     * 
     */
-
-    public void addRepairOrderToRegistry(){
+    private void saveRepairOrderToRegistry(){
         this.repairOrderRegistry.addRepairOrder(this.repairOrder);
     }
 
-    
-    /**
-    **/
-    public void setRepairOrderAsComplete(){
-        repairOrder.setRepairOrderStatus("COMPLETE");
+    public RepairOrder getRepairOrder(){
+        return this.repairOrder;
     }
-
-    /**
-    **/
-    public void setRepairOrderAsPaid(){
-        repairOrder.setRepairOrderStatus("PAID");
-    } 
     
     public CustomerRegistry getCustomerRegistry(){
         return this.customerRegistry;
@@ -188,6 +172,14 @@ public class Controller {
     public RepairOrderRegistry getRepairOrderRegistry(){
         return this.repairOrderRegistry;
     }
+    
+    public void setRepairOrderAsComplete(){
+        repairOrder.setRepairOrderStatus("COMPLETE");
+    }
+
+    public void setRepairOrderAsPaid(){
+        repairOrder.setRepairOrderStatus("PAID");
+    } 
 
 }
 

@@ -25,7 +25,7 @@ public class Main {
         
         RepairOrderRegistry repairOrderRegistry = new RepairOrderRegistry();
         CustomerRegistry customerRegistry = new CustomerRegistry();
-        Printer printer = new Printer(new RepairOrderReceipt(null));
+        Printer printer = new Printer(new RepairOrderReceipt());
         Controller contr = new Controller(repairOrderRegistry, customerRegistry, printer);
         new View(contr).sampleExecution();
     }

@@ -17,17 +17,6 @@ public class RepairOrderTest {
     private ElectricBikeDTO electricBike;
     private CustomerDTO customer;
     private RepairOrder repairOrder;
-    private RepairOrderStatus status;
-
-    @BeforeClass
-    public static void prepare(){
-        System.out.println("Starting.");
-    }
-
-    @AfterClass
-    public static void cleanup(){
-        System.out.println("Ending.");
-    }
 
     @Before
     public void prepareEach(){
@@ -46,28 +35,19 @@ public class RepairOrderTest {
     @Test
     public void TestSetRepairOrderStatus(){
 
-        assertNull("Assert status null.", this.status);
+        assertNull("Assert status null.", repairOrder.getStatus());
         
-        this.status = RepairOrderStatus.APPROVED;
-        assertEquals(RepairOrderStatus.APPROVED, status);
+        repairOrder.setRepairOrderStatus("APPROVED");
+        assertEquals(RepairOrderStatus.APPROVED, repairOrder.getStatus());
  
-        this.status = null;
-        assertNull("Assert status null.", this.status);
+        repairOrder.setRepairOrderStatus("REJECTED");
+        assertEquals(RepairOrderStatus.REJECTED, repairOrder.getStatus());
     }
 
     @Test
-    public void TestAddRepairTasks(){
-        RepairTask repairTask = new RepairTask(null, null);
-        
-        repairOrder.addRepairTask(repairTask);
-        assertEquals("Assert one task was added to repairTaskList.", 1, repairOrder.getRepairTaskList().size());
-        
-        repairTask = new RepairTask(1f, "something");
-        assertNotNull("Assert cost not null.", repairTask.getCost());
-        assertNotNull("Assert description not null", repairTask.getTaskDescription());
-        
-        RepairTask secondRepairTask = new RepairTask(1f, "anything");
-        assertFalse("Asserting different object descriptions as different.", repairTask.getTaskDescription().equals(secondRepairTask.getTaskDescription()));
-        assertEquals("Different objects assert same cost", repairTask.getCost(), secondRepairTask.getCost());
+    public void testSetDiagnosticReport(){
+        DiagnosticReport diagnosticReport = new DiagnosticReport("Any description.");
+        repairOrder.setDiagnosticReport(diagnosticReport);
+        assertEquals(diagnosticReport, repairOrder.getDiagnosticReport());
     }
 }

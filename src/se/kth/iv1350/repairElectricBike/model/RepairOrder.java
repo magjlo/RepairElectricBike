@@ -113,4 +113,12 @@ public class RepairOrder {
     public String getRepairOrderId(){
         return this.repairOrderId;
     }
+
+    public RepairOrderStatus getStatus(){
+        return this.status;
+    }
+
+    public DiagnosticReport getDiagnosticReport(){
+        return this.diagnosticReport;
+    }
 }

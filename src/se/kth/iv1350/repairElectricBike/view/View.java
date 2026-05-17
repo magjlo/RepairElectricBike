@@ -1,6 +1,9 @@
 package se.kth.iv1350.repairElectricBike.view;
 
 import se.kth.iv1350.repairElectricBike.controller.Controller;
+import se.kth.iv1350.repairElectricBike.exception.CustomerRegistryException;
+import se.kth.iv1350.repairElectricBike.exception.RepairOrderRegistryException;
+
 import java.util.*;
 
 /**
@@ -26,11 +29,19 @@ public class View {
      * 
      */
     public void sampleExecution(){
-        System.out.println(contr.findCustomerByPhoneNumber("0701234567").toString());
+        try {
+            System.out.println(contr.findCustomerByPhoneNumber("0701234567").toString());
+        } catch (CustomerRegistryException e) {
+            e.printStackTrace();
+        }
         contr.confirmCustomerDetails(true);
         String repairOrderId = contr.createInitialRepairOrderByProblemDescription("The bike has a broken brake.");
         contr.updateRepairOrder("Sample diagnostic report", Arrays.asList(100.0f, 200.0f), Arrays.asList("Replace brake pads", "Replace brake cables"));
-        System.out.println(contr.findRepairOrderById(repairOrderId).toString());
+        try {
+            System.out.println(contr.findRepairOrderById(repairOrderId).toString());
+        } catch (RepairOrderRegistryException e) {
+            e.printStackTrace();
+        }
         contr.approveRepairOrder();
     }
 }

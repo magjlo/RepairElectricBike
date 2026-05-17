@@ -4,7 +4,7 @@ import se.kth.iv1350.repairElectricBike.model.RepairOrder;
 import se.kth.iv1350.repairElectricBike.model.RepairOrderObserver;
 
 public class RepairOrderLogger implements RepairOrderObserver {
-    private FileLogger fileLogger = new FileLogger();
+    private FileLogger fileLogger = new FileLogger("repairOrderLog.txt");
 
     @Override
     public void updateRepairOrder(RepairOrder repairOrder) {

@@ -31,7 +31,7 @@ public class Controller {
     private CustomerDTO customerDTO;
     private RepairOrder repairOrder;
     private RepairOrderReceipt repairOrderReceipt;
-    private FileLogger  fileLogger = new FileLogger();
+    private FileLogger  fileLogger = new FileLogger("log.txt");
     private List<RepairOrderObserver> repairOrderObservers = new ArrayList<>();
 
     /**

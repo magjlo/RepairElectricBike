@@ -17,9 +17,9 @@ public class FileLogger {
      * 
      * @throws IOException if the log file cannot be created or accessed.
      */
-    public FileLogger() {
+    public FileLogger(String fileName) {
         try {
-            this.logFile = new PrintWriter(new FileWriter("log.txt", true));
+            this.logFile = new PrintWriter(new FileWriter(fileName, true));
         } catch (IOException e) {
             System.err.println("Failed to initialize log file: " +  e);
         }
@@ -30,7 +30,7 @@ public class FileLogger {
      * @param message the message to log
      */
     public void log(String message) {
-        logFile.println("ERROR EVENT: " + LocalDateTime.now());
+        logFile.println("LOG EVENT: " + LocalDateTime.now());
         logFile.println(message);
         logFile.flush();
     }

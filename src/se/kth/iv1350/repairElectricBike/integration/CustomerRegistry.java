@@ -41,13 +41,18 @@ public class CustomerRegistry {
      * @return Is a null value if a customer is not found.
      * 
      */
-    public CustomerDTO findCustomer(String phoneNumber){
-
+    public CustomerDTO findCustomer(String phoneNumber) throws PhoneNumberNotFoundException{
+       
+        CustomerDTO foundCustomerDTO = null;
         for(CustomerDTO customerDTO : this.customerDTOList){
             if(customerDTO.getPhoneNumber().equals(phoneNumber)){
-                return customerDTO;
+                foundCustomerDTO = customerDTO;
+                break;
             }
         }
-        return null;
+        if(foundCustomerDTO == null){
+            throw new PhoneNumberNotFoundException(phoneNumber);
+        }
+        return foundCustomerDTO;
     }
 }

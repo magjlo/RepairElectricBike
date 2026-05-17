@@ -2,9 +2,11 @@ package se.kth.iv1350.repairElectricBike.controller;
 
 import java.util.*;
 import se.kth.iv1350.repairElectricBike.integration.RepairOrderRegistry;
+import se.kth.iv1350.repairElectricBike.integration.PhoneNumberNotFoundException;
 import se.kth.iv1350.repairElectricBike.integration.CustomerRegistry;
 import se.kth.iv1350.repairElectricBike.integration.Printer;
 import se.kth.iv1350.repairElectricBike.dataTransferObjects.*;
+import se.kth.iv1350.repairElectricBike.exception.CustomerRegistryException;
 import se.kth.iv1350.repairElectricBike.model.RepairOrder;
 import se.kth.iv1350.repairElectricBike.model.RepairOrderReceipt;
 import se.kth.iv1350.repairElectricBike.model.RepairTask;
@@ -52,8 +54,12 @@ public class Controller {
     * 
     */
 
-    public CustomerDTO findCustomerByPhoneNumber(String phoneNumber){
-        this.customerDTO = customerRegistry.findCustomer(phoneNumber);
+    public CustomerDTO findCustomerByPhoneNumber(String phoneNumber) throws CustomerRegistryException{
+        try{
+            this.customerDTO = customerRegistry.findCustomer(phoneNumber);
+        } catch(PhoneNumberNotFoundException phoNumNotFoundExc){
+            throw new CustomerRegistryException("Customer does not exist in registry.");
+        }
         return getCustomerDTO();
     }
 

@@ -37,7 +37,7 @@ public class RepairOrderRegistry {
      * @return the found RepairOrder object, or null if not found.
      * @throws DataBaseUnavailableException if the database is currently unavailable for repair order search.
      */
-    public RepairOrder findRepairOrder(String repairOrderId) throws DataBaseUnavailableException{
+    public RepairOrder findRepairOrder(String repairOrderId) throws RepairOrderNotFoundException, DataBaseUnavailableException{
         if(repairOrderId == "DB_UNAVAILABLE"){
             throw new DataBaseUnavailableException("Database is currerntly unavailable for repair order search.");
         }
@@ -47,6 +47,9 @@ public class RepairOrderRegistry {
                 foundRepairOrder = repairOrder;
                 break;
             }
+        }
+        if(foundRepairOrder == null){
+            throw new RepairOrderNotFoundException(repairOrderId);
         }
         return foundRepairOrder;
     }

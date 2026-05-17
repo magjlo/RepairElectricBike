@@ -30,17 +30,23 @@ public class View {
      */
     public void sampleExecution(){
         try {
-            System.out.println(contr.findCustomerByPhoneNumber("0701234567").toString());
+            contr.findCustomerByPhoneNumber("0701234567");
         } catch (CustomerRegistryException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+            System.exit(1);
         }
+        
         contr.confirmCustomerDetails(true);
         String repairOrderId = contr.createInitialRepairOrderByProblemDescription("The bike has a broken brake.");
+       
+
         contr.updateRepairOrder("Sample diagnostic report", Arrays.asList(100.0f, 200.0f), Arrays.asList("Replace brake pads", "Replace brake cables"));
+  
         try {
-            System.out.println(contr.findRepairOrderById(repairOrderId).toString());
+            contr.findRepairOrderById(repairOrderId);
         } catch (RepairOrderRegistryException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+            System.exit(1);
         }
         contr.approveRepairOrder();
     }

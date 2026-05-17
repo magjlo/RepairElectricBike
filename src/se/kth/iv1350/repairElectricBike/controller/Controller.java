@@ -6,6 +6,7 @@ import se.kth.iv1350.repairElectricBike.integration.PhoneNumberNotFoundException
 import se.kth.iv1350.repairElectricBike.integration.CustomerRegistry;
 import se.kth.iv1350.repairElectricBike.integration.DataBaseUnavailableException;
 import se.kth.iv1350.repairElectricBike.integration.Printer;
+import se.kth.iv1350.repairElectricBike.integration.RepairOrderNotFoundException;
 import se.kth.iv1350.repairElectricBike.dataTransferObjects.*;
 import se.kth.iv1350.repairElectricBike.exception.CustomerRegistryException;
 import se.kth.iv1350.repairElectricBike.exception.RepairOrderRegistryException;
@@ -56,7 +57,7 @@ public class Controller {
     * 
     */
 
-    public CustomerDTO findCustomerByPhoneNumber(String phoneNumber) throws CustomerRegistryException{
+    public void findCustomerByPhoneNumber(String phoneNumber) throws CustomerRegistryException{
         try{
             this.customerDTO = customerRegistry.findCustomer(phoneNumber);
         } catch(PhoneNumberNotFoundException phoNumNotFoundExc){
@@ -64,9 +65,8 @@ public class Controller {
         } catch(DataBaseUnavailableException dbUnavailExc){
             throw new CustomerRegistryException("Customer registry is currently unavailable.", dbUnavailExc);
         }
-        return getCustomerDTO();
+        System.out.println(customerDTO.toString());
     }
-
     /**
     * Checks the customer initialized here against the one found in customer registry.
     * 
@@ -78,9 +78,9 @@ public class Controller {
 
     public void confirmCustomerDetails(Boolean areDetailsCorrect){
         if(areDetailsCorrect){
-            System.out.println("Customer details confirmed.");
+            System.out.println("\nCustomer details confirmed.");
         } else {
-            System.out.println("Customer details are not correct.");
+            System.out.println("\nCustomer details are not correct.");
         }
     }
 
@@ -97,6 +97,7 @@ public class Controller {
     public String createInitialRepairOrderByProblemDescription(String problemDescription){
        this.repairOrder = new RepairOrder(this.customerDTO, problemDescription);
        repairOrder.setRepairOrderStatus("NEWLY_CREATED");
+       saveRepairOrderToRegistry();
        return repairOrder.getRepairOrderId();
     }
 
@@ -108,10 +109,14 @@ public class Controller {
      */
     public RepairOrder findRepairOrderById(String repairOrderId) throws RepairOrderRegistryException{
         try{
-            repairOrderRegistry.findRepairOrder(repairOrderId);
-        } catch(DataBaseUnavailableException dbUnavailExc){
+            this.repairOrder = repairOrderRegistry.findRepairOrder(repairOrderId);
+        } catch(RepairOrderNotFoundException repOrdNotFoundExc){
+            throw new RepairOrderRegistryException("Repair order does not exist in registry.");
+        } 
+        catch(DataBaseUnavailableException dbUnavailExc){
             throw new RepairOrderRegistryException("Repair order registry is currently unavailable.", dbUnavailExc);
         }
+        System.out.println("\n"+repairOrder.toString());
         return getRepairOrder();
     }
 
@@ -137,7 +142,6 @@ public class Controller {
             repairOrder.addRepairTask(new RepairTask(cost, taskDescription));
         }
         repairOrder.setRepairOrderStatus("READY_FOR_APPROVAL");
-        saveRepairOrderToRegistry();
     }
 
     /**
@@ -146,6 +150,7 @@ public class Controller {
     */
     public void approveRepairOrder(){
         repairOrder.setRepairOrderStatus("APPROVED");
+        System.out.println("\nRepair order approved.\n");
         printRepairOrder();
     }
 

@@ -29,15 +29,8 @@ public class RepairOrderReceipt {
         this.receipt.append("-----REPAIR ORDER RECEIPT-----")
         .append("\n---Repair Order---")
         .append("\n"+repairOrder.toString())
-        .append("\n"+repairOrder.getCreationDate())
-        .append("\nCustomer details:")
-        .append(repairOrder.getCustomerDTO().toString())
-        .append("\n---Repair Tasks and Costs---");
-        
-        for(RepairTask repairTask : repairOrder.getRepairTaskList()){
-            this.receipt.append("\n\tTask description: ").append(repairTask.getTaskDescription())
-                .append(" Cost: ").append(repairTask.getCost());
-        }
+        .append("---Customer details---\n")
+        .append(repairOrder.getCustomerDTO().toString());
     }
 
     public StringBuilder getReceipt(){

@@ -2,7 +2,6 @@ package se.kth.iv1350.repairElectricBike.view;
 
 import se.kth.iv1350.repairElectricBike.controller.Controller;
 import se.kth.iv1350.repairElectricBike.exception.CustomerRegistryException;
-import se.kth.iv1350.repairElectricBike.exception.RepairOrderRegistryException;
 
 import java.util.*;
 
@@ -37,17 +36,8 @@ public class View {
         }
         
         contr.confirmCustomerDetails(true);
-        String repairOrderId = contr.createInitialRepairOrderByProblemDescription("The bike has a broken brake.");
-       
-
+        contr.createInitialRepairOrderByProblemDescription("The bike has a broken brake.");
         contr.updateRepairOrder("Sample diagnostic report", Arrays.asList(100.0f, 200.0f), Arrays.asList("Replace brake pads", "Replace brake cables"));
-  
-        try {
-            contr.findRepairOrderById(repairOrderId);
-        } catch (RepairOrderRegistryException e) {
-            System.out.println(e.getMessage());
-            System.exit(1);
-        }
         contr.approveRepairOrder();
     }
 }

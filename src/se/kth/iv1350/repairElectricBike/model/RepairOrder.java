@@ -61,6 +61,7 @@ public class RepairOrder {
     @Override
     public String toString(){
         StringBuilder builder = new StringBuilder();
+        builder.append("Creation Date: " + creationDate + "\n");
         builder.append("Repair Order ID: " + repairOrderId + "\n");
         builder.append("Customer Name: " + customerDTO.getCustomerName() + "\n");
         builder.append("Problem Description: " + problemDescription + "\n");

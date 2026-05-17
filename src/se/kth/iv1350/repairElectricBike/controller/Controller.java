@@ -13,8 +13,10 @@ import se.kth.iv1350.repairElectricBike.exception.RepairOrderRegistryException;
 import se.kth.iv1350.repairElectricBike.model.RepairOrder;
 import se.kth.iv1350.repairElectricBike.model.RepairOrderReceipt;
 import se.kth.iv1350.repairElectricBike.model.RepairTask;
-import se.kth.iv1350.repairElectricBike.util.FileLogger;
 import se.kth.iv1350.repairElectricBike.model.DiagnosticReport;
+import se.kth.iv1350.repairElectricBike.model.RepairOrderObserver;
+import se.kth.iv1350.repairElectricBike.util.FileLogger;
+
 
 /**
  * Application controller, the only one that exists.
@@ -30,6 +32,7 @@ public class Controller {
     private RepairOrder repairOrder;
     private RepairOrderReceipt repairOrderReceipt;
     private FileLogger  fileLogger = new FileLogger();
+    private List<RepairOrderObserver> repairOrderObservers = new ArrayList<>();
 
     /**
     * Creates a new instance of controller
@@ -49,6 +52,16 @@ public class Controller {
         this.repairOrderRegistry = repairOrderRegistry;
         this.customerRegistry = customerRegistry;
         this.printer = printer;
+    }
+
+    public void addRepairOrderObserver(RepairOrderObserver observer) {
+        repairOrderObservers.add(observer);
+    }
+
+    private void notifyRepairOrderObservers() {
+        for (RepairOrderObserver observer : repairOrderObservers) {
+            observer.updateRepairOrder(repairOrder);
+        }
     }
 
     /**
@@ -82,9 +95,9 @@ public class Controller {
 
     public void confirmCustomerDetails(Boolean areDetailsCorrect){
         if(areDetailsCorrect){
-            System.out.println("\nCustomer details confirmed.");
+            System.out.println("\nCustomer details confirmed.\n");
         } else {
-            System.out.println("\nCustomer details are not correct.");
+            System.out.println("\nCustomer details are not correct.\n");
         }
     }
 
@@ -102,6 +115,7 @@ public class Controller {
        this.repairOrder = new RepairOrder(this.customerDTO, problemDescription);
        repairOrder.setRepairOrderStatus("NEWLY_CREATED");
        saveRepairOrderToRegistry();
+       notifyRepairOrderObservers();
        return repairOrder.getRepairOrderId();
     }
 
@@ -122,7 +136,6 @@ public class Controller {
             fileLogger.log("Repair order registry is currently unavailable. " + dbUnavailExc.getMessage());
             throw new RepairOrderRegistryException("Repair order registry is currently unavailable.", dbUnavailExc);
         }
-        System.out.println("\n"+repairOrder.toString());
         return getRepairOrder();
     }
 
@@ -148,6 +161,7 @@ public class Controller {
             repairOrder.addRepairTask(new RepairTask(cost, taskDescription));
         }
         repairOrder.setRepairOrderStatus("READY_FOR_APPROVAL");
+        notifyRepairOrderObservers();
     }
 
     /**
@@ -157,14 +171,14 @@ public class Controller {
     public void approveRepairOrder(){
         repairOrder.setRepairOrderStatus("APPROVED");
         System.out.println("\nRepair order approved.\n");
-        printRepairOrder();
+        finalizeAndPrintReceipt();
     }
 
     /**
     * Prints the RepairOrderReceipt from <code>fetchReceipt()</code> to the console (System.Out)
     * 
     */
-    public void printRepairOrder(){
+    public void finalizeAndPrintReceipt(){
         initializeRepairOrderReceipt();
         this.printer.printRepairOrderReceipt(repairOrderReceipt);
     }

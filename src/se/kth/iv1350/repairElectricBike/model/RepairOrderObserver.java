@@ -1,0 +1,14 @@
+package se.kth.iv1350.repairElectricBike.model;
+
+/**
+ * This interface defines the observer for repair orders.
+ * Classes that implement this interface can be notified of changes to repair orders.
+ */
+public interface RepairOrderObserver {
+    
+    /**
+     * This method is called when a repair order is updated.
+     * @param repairOrder the repair order that triggered the notification.
+     */
+    void updateRepairOrder(RepairOrder repairOrder);
+}

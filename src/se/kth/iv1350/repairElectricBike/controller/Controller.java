@@ -13,6 +13,7 @@ import se.kth.iv1350.repairElectricBike.exception.RepairOrderRegistryException;
 import se.kth.iv1350.repairElectricBike.model.RepairOrder;
 import se.kth.iv1350.repairElectricBike.model.RepairOrderReceipt;
 import se.kth.iv1350.repairElectricBike.model.RepairTask;
+import se.kth.iv1350.repairElectricBike.util.FileLogger;
 import se.kth.iv1350.repairElectricBike.model.DiagnosticReport;
 
 /**
@@ -28,6 +29,7 @@ public class Controller {
     private CustomerDTO customerDTO;
     private RepairOrder repairOrder;
     private RepairOrderReceipt repairOrderReceipt;
+    private FileLogger  fileLogger = new FileLogger();
 
     /**
     * Creates a new instance of controller
@@ -61,8 +63,10 @@ public class Controller {
         try{
             this.customerDTO = customerRegistry.findCustomer(phoneNumber);
         } catch(PhoneNumberNotFoundException phoNumNotFoundExc){
+            fileLogger.log("Customer does not exist in registry. " + phoNumNotFoundExc.getMessage());
             throw new CustomerRegistryException("Customer does not exist in registry.");
         } catch(DataBaseUnavailableException dbUnavailExc){
+            fileLogger.log("Customer registry is currently unavailable. " + dbUnavailExc.getMessage());
             throw new CustomerRegistryException("Customer registry is currently unavailable.", dbUnavailExc);
         }
         System.out.println(customerDTO.toString());
@@ -111,9 +115,11 @@ public class Controller {
         try{
             this.repairOrder = repairOrderRegistry.findRepairOrder(repairOrderId);
         } catch(RepairOrderNotFoundException repOrdNotFoundExc){
+            fileLogger.log("Repair order does not exist in registry. " + repOrdNotFoundExc.getMessage());
             throw new RepairOrderRegistryException("Repair order does not exist in registry.");
         } 
         catch(DataBaseUnavailableException dbUnavailExc){
+            fileLogger.log("Repair order registry is currently unavailable. " + dbUnavailExc.getMessage());
             throw new RepairOrderRegistryException("Repair order registry is currently unavailable.", dbUnavailExc);
         }
         System.out.println("\n"+repairOrder.toString());

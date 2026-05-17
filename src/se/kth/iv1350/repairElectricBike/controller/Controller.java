@@ -59,8 +59,9 @@ public class Controller {
     }
 
     private void notifyRepairOrderObservers() {
+        RepairOrderDTO repairOrderDTO = this.repairOrder.toDTO();
         for (RepairOrderObserver observer : repairOrderObservers) {
-            observer.updateRepairOrder(repairOrder);
+            observer.updateRepairOrder(repairOrderDTO);
         }
     }
 

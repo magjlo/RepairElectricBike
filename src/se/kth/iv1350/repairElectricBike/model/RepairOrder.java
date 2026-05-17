@@ -1,6 +1,8 @@
 package se.kth.iv1350.repairElectricBike.model;
 
 import se.kth.iv1350.repairElectricBike.dataTransferObjects.CustomerDTO;
+import se.kth.iv1350.repairElectricBike.dataTransferObjects.RepairOrderDTO;
+
 import java.util.*;
 import java.time.LocalDateTime;;
 
@@ -95,6 +97,18 @@ public class RepairOrder {
         return UUID.randomUUID().toString();
     }
 
+    public RepairOrderDTO toDTO() {
+        return new RepairOrderDTO(
+            this.problemDescription,
+            this.creationDate,
+            this.repairOrderId,
+            this.status,         
+            this.customerDTO,     
+            this.diagnosticReport,
+            new ArrayList<>(this.repairTaskList) 
+        );
+    }
+    
     public CustomerDTO getCustomerDTO(){
         return this.customerDTO;
     }

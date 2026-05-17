@@ -17,14 +17,7 @@ public class RepairOrderDTO {
 
     /**
      * Creates an instance of RepairOrderDTO, with all fields.
-      *
-     * @param problemDescription
-     * @param creationDate
-     * @param repairOrderId
-     * @param status
-     * @param customerDTO
-     * @param diagnosticReport
-     * @param repairTaskList
+     * 
      */
     public RepairOrderDTO(String problemDescription, String creationDate, String repairOrderId, RepairOrderStatus status, CustomerDTO customerDTO, DiagnosticReport diagnosticReport, List<RepairTask> repairTaskList){
         this.problemDescription = problemDescription;

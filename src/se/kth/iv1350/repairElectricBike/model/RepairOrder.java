@@ -93,10 +93,18 @@ public class RepairOrder {
         this.repairTaskList.add(repairTask);
     }
 
+    /**
+     * Generates a unique repair order ID using UUID.
+     *  
+     */
     private String generateUniqueRepairOrderId(){
         return UUID.randomUUID().toString();
     }
 
+    /**
+     * Returns a RepairOrderDTO object containing the data of the RepairOrder.
+     * 
+     */
     public RepairOrderDTO toDTO() {
         return new RepairOrderDTO(
             this.problemDescription,
@@ -108,7 +116,7 @@ public class RepairOrder {
             new ArrayList<>(this.repairTaskList) 
         );
     }
-    
+
     public CustomerDTO getCustomerDTO(){
         return this.customerDTO;
     }

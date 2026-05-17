@@ -54,14 +54,21 @@ public class Controller {
         this.printer = printer;
     }
 
+    /**
+     * Adds a RepairOrderObserver to the list of observers that will be notified when a repair order is updated.
+     * @param observer the RepairOrderObserver to be added to the list of observers.
+     */
     public void addRepairOrderObserver(RepairOrderObserver observer) {
         repairOrderObservers.add(observer);
     }
 
+    /**
+     * Notifies all registered RepairOrderObservers of an update to the repair order by creating a RepairOrderDTO and calling the updateRepairOrder method on each observer.
+     */
     private void notifyRepairOrderObservers() {
         RepairOrderDTO repairOrderDTO = this.repairOrder.toDTO();
         for (RepairOrderObserver observer : repairOrderObservers) {
-            observer.updateRepairOrder(repairOrderDTO);
+            observer.updateRepairOrderDTO(repairOrderDTO);
         }
     }
 

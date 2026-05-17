@@ -12,5 +12,5 @@ public interface RepairOrderObserver {
      * This method is called when a repair order is updated.
      * @param repairOrder the repair order that triggered the notification.
      */
-    void updateRepairOrder(RepairOrderDTO repairOrderDTO);
+    void updateRepairOrderDTO(RepairOrderDTO repairOrderDTO);
 }

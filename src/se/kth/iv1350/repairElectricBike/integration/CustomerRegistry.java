@@ -39,10 +39,13 @@ public class CustomerRegistry {
      * 
      * @return Customer is the Customer object which has a matchin phoneNumber field to @param phonenumber.
      * @return Is a null value if a customer is not found.
-     * 
+     * @throws PhoneNumberNotFoundException if no customer is found matching the @param phoneNumber.
+     * @throws DataBaseUnavailableException if the database is currently unavailable for customer search.
      */
-    public CustomerDTO findCustomer(String phoneNumber) throws PhoneNumberNotFoundException{
-       
+    public CustomerDTO findCustomer(String phoneNumber) throws PhoneNumberNotFoundException, DataBaseUnavailableException{
+        if(phoneNumber == "DB_UNAVAILABLE"){
+            throw new DataBaseUnavailableException("Database is currently unavailable for customer search.");
+        }
         CustomerDTO foundCustomerDTO = null;
         for(CustomerDTO customerDTO : this.customerDTOList){
             if(customerDTO.getPhoneNumber().equals(phoneNumber)){

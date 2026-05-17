@@ -4,9 +4,11 @@ import java.util.*;
 import se.kth.iv1350.repairElectricBike.integration.RepairOrderRegistry;
 import se.kth.iv1350.repairElectricBike.integration.PhoneNumberNotFoundException;
 import se.kth.iv1350.repairElectricBike.integration.CustomerRegistry;
+import se.kth.iv1350.repairElectricBike.integration.DataBaseUnavailableException;
 import se.kth.iv1350.repairElectricBike.integration.Printer;
 import se.kth.iv1350.repairElectricBike.dataTransferObjects.*;
 import se.kth.iv1350.repairElectricBike.exception.CustomerRegistryException;
+import se.kth.iv1350.repairElectricBike.exception.RepairOrderRegistryException;
 import se.kth.iv1350.repairElectricBike.model.RepairOrder;
 import se.kth.iv1350.repairElectricBike.model.RepairOrderReceipt;
 import se.kth.iv1350.repairElectricBike.model.RepairTask;
@@ -59,6 +61,8 @@ public class Controller {
             this.customerDTO = customerRegistry.findCustomer(phoneNumber);
         } catch(PhoneNumberNotFoundException phoNumNotFoundExc){
             throw new CustomerRegistryException("Customer does not exist in registry.");
+        } catch(DataBaseUnavailableException dbUnavailExc){
+            throw new CustomerRegistryException("Customer registry is currently unavailable.", dbUnavailExc);
         }
         return getCustomerDTO();
     }
@@ -102,14 +106,13 @@ public class Controller {
      * @param repairOrderId is a unique string associated with a single repair order.
      * 
      */
-    public RepairOrder findRepairOrderById(String repairOrderId){
-        
-        for(RepairOrder repairOrder : this.repairOrderRegistry.getRepairOrderList()){
-            if(Objects.equals(repairOrder.getRepairOrderId(), repairOrderId)){
-                return repairOrder;
-            }
+    public RepairOrder findRepairOrderById(String repairOrderId) throws RepairOrderRegistryException{
+        try{
+            repairOrderRegistry.findRepairOrder(repairOrderId);
+        } catch(DataBaseUnavailableException dbUnavailExc){
+            throw new RepairOrderRegistryException("Repair order registry is currently unavailable.", dbUnavailExc);
         }
-        return null;
+        return getRepairOrder();
     }
 
     /**

@@ -43,7 +43,7 @@ public class CustomerRegistry {
      * @throws DataBaseUnavailableException if the database is currently unavailable for customer search.
      */
     public CustomerDTO findCustomer(String phoneNumber) throws PhoneNumberNotFoundException, DataBaseUnavailableException{
-        if(phoneNumber == "DB_UNAVAILABLE"){
+        if(phoneNumber.contains("DB_UNAVAILABLE")){
             throw new DataBaseUnavailableException("Database is currently unavailable for customer search.");
         }
         CustomerDTO foundCustomerDTO = null;

@@ -88,7 +88,7 @@ public class Controller {
             throw new CustomerRegistryException("Customer does not exist in registry.");
         } catch(DataBaseUnavailableException dbUnavailExc){
             fileLogger.log("Customer registry is currently unavailable. " + dbUnavailExc.getMessage());
-            throw new CustomerRegistryException("Customer registry is currently unavailable.", dbUnavailExc);
+            throw new CustomerRegistryException("Customer registry is currently unavailable.");
         }
         System.out.println(customerDTO.toString());
     }

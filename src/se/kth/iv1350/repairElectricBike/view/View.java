@@ -28,12 +28,19 @@ public class View {
      * 
      */
     public void sampleExecution(){
-        try {
-            contr.findCustomerByPhoneNumber("0701234567");
-        } catch (CustomerRegistryException e) {
-            System.out.println(e.getMessage());
-            System.exit(1);
+
+        Scanner scanner = new Scanner(System.in);
+        boolean customerFound = false;
+        while (!customerFound) {
+            String phoneNumber = scanner.nextLine().trim();
+            try {
+                contr.findCustomerByPhoneNumber(phoneNumber);
+                customerFound = true;
+            } catch (CustomerRegistryException e) {
+                System.out.println(e.getMessage());
+            }
         }
+        scanner.close();
         
         contr.confirmCustomerDetails(true);
         contr.createInitialRepairOrderByProblemDescription("The bike has a broken brake.");

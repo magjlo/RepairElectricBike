@@ -1,9 +1,11 @@
 package se.kth.iv1350.repairElectricBike.view;
 
-import se.kth.iv1350.repairElectricBike.controller.Controller;
-import se.kth.iv1350.repairElectricBike.exception.CustomerRegistryException;
+import java.util.Arrays;
 
-import java.util.*;
+import se.kth.iv1350.repairElectricBike.controller.*;
+import se.kth.iv1350.repairElectricBike.dataTransferObjects.CustomerDTO;
+import se.kth.iv1350.repairElectricBike.dataTransferObjects.ElectricBikeDTO;
+import se.kth.iv1350.repairElectricBike.exception.CustomerRegistryException;
 
 /**
  * Placeholder class for view as it does not exist yet.
@@ -29,22 +31,18 @@ public class View {
      */
     public void sampleExecution(){
 
-        Scanner scanner = new Scanner(System.in);
-        boolean customerFound = false;
-        while (!customerFound) {
-            String phoneNumber = scanner.nextLine().trim();
-            try {
-                contr.findCustomerByPhoneNumber(phoneNumber);
-                customerFound = true;
-            } catch (CustomerRegistryException e) {
-                System.out.println(e.getMessage());
-            }
+        ElectricBikeDTO electricBikeDTO = new ElectricBikeDTO("Trek", "Madone", "SN123456789");
+        CustomerDTO customerDTO = new CustomerDTO("0701234567", "John.Doe@gmail.com", "John Doe", electricBikeDTO);
+        contr.addNewCustomer(customerDTO);
+
+        try{
+            contr.findCustomer("0701234567");
+        } catch (CustomerRegistryException custRegException) {
+            System.exit(1);
         }
-        scanner.close();
-        
-        contr.confirmCustomerDetails(true);
-        contr.createInitialRepairOrderByProblemDescription("The bike has a broken brake.");
-        contr.updateRepairOrder("Sample diagnostic report", Arrays.asList(100.0f, 200.0f), Arrays.asList("Replace brake pads", "Replace brake cables"));
-        contr.approveRepairOrder();
+    
+        contr.createInitialRepairOrder("The bike has a broken brake.");
+        contr.updateCurrentRepairOrder("Sample diagnostic report", Arrays.asList(100.0f, 200.0f), Arrays.asList("Replace brake pads", "Replace brake cables"));
+        contr.approveAndPrintRepairOrder();
     }
 }

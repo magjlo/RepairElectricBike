@@ -1,154 +1,38 @@
-LOG EVENT: 2026-05-17T17:25:40.946
-Repair order updated: Creation Date: 2026-05-17T17:25:40.934
-Repair Order ID: ebc19bb3-b1e4-4880-8bfc-0333ab0edf5c
+LOG EVENT: 2026-05-31T14:20:38.294
+Repair order updated: Creation Date: 2026-05-31T14:20:37.887
+Repair Order ID: 34b006ed-e3fc-4fd9-95c0-c98e9d4df8d4
 Customer Name: John Doe
 Problem Description: The bike has a broken brake.
+Total Cost: 0.0
+Status: NEWLY_CREATED
 
-LOG EVENT: 2026-05-17T17:25:40.948
-Repair order updated: Creation Date: 2026-05-17T17:25:40.934
-Repair Order ID: ebc19bb3-b1e4-4880-8bfc-0333ab0edf5c
+LOG EVENT: 2026-05-31T14:20:38.296
+Repair order updated: Creation Date: 2026-05-31T14:20:37.887
+Repair Order ID: 34b006ed-e3fc-4fd9-95c0-c98e9d4df8d4
 Customer Name: John Doe
 Problem Description: The bike has a broken brake.
 Repair Task 1: Replace brake pads, Cost: 100.0
 Repair Task 2: Replace brake cables, Cost: 200.0
+Total Cost: 300.0
+Status: NEWLY_CREATED
 
-LOG EVENT: 2026-05-17T19:07:09.573
-Repair order updated: Creation Date: 2026-05-17T19:07:09.553
-Repair Order ID: 173ad126-7a2c-477f-986c-f31712414b5a
-Customer Name: John Doe
-Problem Description: The bike has a broken brake.
-
-LOG EVENT: 2026-05-17T19:07:09.573
-Repair order updated: Creation Date: 2026-05-17T19:07:09.553
-Repair Order ID: 173ad126-7a2c-477f-986c-f31712414b5a
+LOG EVENT: 2026-05-31T14:20:38.297
+Repair order updated: Creation Date: 2026-05-31T14:20:37.887
+Repair Order ID: 34b006ed-e3fc-4fd9-95c0-c98e9d4df8d4
 Customer Name: John Doe
 Problem Description: The bike has a broken brake.
 Repair Task 1: Replace brake pads, Cost: 100.0
 Repair Task 2: Replace brake cables, Cost: 200.0
+Total Cost: 300.0
+Status: READY_FOR_APPROVAL
 
-LOG EVENT: 2026-05-17T20:36:53.412
-Repair order updated: Creation Date: 2026-05-17T20:36:53.411
-Repair Order ID: 1c200ff9-6501-41da-9445-d83925ce79fb
-Customer Name: John Doe
-Problem Description: The bike has a broken brake.
-
-LOG EVENT: 2026-05-17T20:36:53.412
-Repair order updated: Creation Date: 2026-05-17T20:36:53.411
-Repair Order ID: 1c200ff9-6501-41da-9445-d83925ce79fb
+LOG EVENT: 2026-05-31T14:20:38.298
+Repair order updated: Creation Date: 2026-05-31T14:20:37.887
+Repair Order ID: 34b006ed-e3fc-4fd9-95c0-c98e9d4df8d4
 Customer Name: John Doe
 Problem Description: The bike has a broken brake.
 Repair Task 1: Replace brake pads, Cost: 100.0
 Repair Task 2: Replace brake cables, Cost: 200.0
-
-LOG EVENT: 2026-05-17T20:37:08.383
-Repair order updated: Creation Date: 2026-05-17T20:37:08.366
-Repair Order ID: 5880c154-a849-4eab-8408-aa71e6394a4a
-Customer Name: John Doe
-Problem Description: The bike has a broken brake.
-
-LOG EVENT: 2026-05-17T20:37:08.385
-Repair order updated: Creation Date: 2026-05-17T20:37:08.366
-Repair Order ID: 5880c154-a849-4eab-8408-aa71e6394a4a
-Customer Name: John Doe
-Problem Description: The bike has a broken brake.
-Repair Task 1: Replace brake pads, Cost: 100.0
-Repair Task 2: Replace brake cables, Cost: 200.0
-
-LOG EVENT: 2026-05-17T20:50:51.329
-Repair order updated: Creation Date: 2026-05-17T20:50:51.317
-Repair Order ID: eeb43a64-2f68-455b-a8fb-c81b4afb486c
-Customer Name: John Doe
-Problem Description: The bike has a broken brake.
-
-LOG EVENT: 2026-05-17T20:50:51.329
-Repair order updated: Creation Date: 2026-05-17T20:50:51.317
-Repair Order ID: eeb43a64-2f68-455b-a8fb-c81b4afb486c
-Customer Name: John Doe
-Problem Description: The bike has a broken brake.
-Repair Task 1: Replace brake pads, Cost: 100.0
-Repair Task 2: Replace brake cables, Cost: 200.0
-
-LOG EVENT: 2026-05-18T12:26:28.846
-Repair order updated: Creation Date: 2026-05-18T12:26:28.835
-Repair Order ID: f37a9bc1-c269-4e0d-aa1b-dbe8f1b11b8d
-Customer Name: John Doe
-Problem Description: The bike has a broken brake.
-
-LOG EVENT: 2026-05-18T12:26:28.848
-Repair order updated: Creation Date: 2026-05-18T12:26:28.835
-Repair Order ID: f37a9bc1-c269-4e0d-aa1b-dbe8f1b11b8d
-Customer Name: John Doe
-Problem Description: The bike has a broken brake.
-Repair Task 1: Replace brake pads, Cost: 100.0
-Repair Task 2: Replace brake cables, Cost: 200.0
-
-LOG EVENT: 2026-05-18T12:31:40.182
-Repair order updated: Creation Date: 2026-05-18T12:31:40.170
-Repair Order ID: a2542269-b5bf-4350-b48a-6dda5f48cc26
-Customer Name: John Doe
-Problem Description: The bike has a broken brake.
-
-LOG EVENT: 2026-05-18T12:31:40.184
-Repair order updated: Creation Date: 2026-05-18T12:31:40.170
-Repair Order ID: a2542269-b5bf-4350-b48a-6dda5f48cc26
-Customer Name: John Doe
-Problem Description: The bike has a broken brake.
-Repair Task 1: Replace brake pads, Cost: 100.0
-Repair Task 2: Replace brake cables, Cost: 200.0
-
-LOG EVENT: 2026-05-18T12:33:33.162
-Repair order updated: Creation Date: 2026-05-18T12:33:33.162
-Repair Order ID: 33586f63-f2c5-48bd-8dac-331e322a9343
-Customer Name: John Doe
-Problem Description: The bike has a broken brake.
-
-LOG EVENT: 2026-05-18T12:33:33.170
-Repair order updated: Creation Date: 2026-05-18T12:33:33.162
-Repair Order ID: 33586f63-f2c5-48bd-8dac-331e322a9343
-Customer Name: John Doe
-Problem Description: The bike has a broken brake.
-Repair Task 1: Replace brake pads, Cost: 100.0
-Repair Task 2: Replace brake cables, Cost: 200.0
-
-LOG EVENT: 2026-05-18T12:56:03.017
-Repair order updated: Creation Date: 2026-05-18T12:56:03.017
-Repair Order ID: 7c69e7e6-72b8-44af-b01a-a5cf96739c19
-Customer Name: John Doe
-Problem Description: The bike has a broken brake.
-
-LOG EVENT: 2026-05-18T12:56:03.022
-Repair order updated: Creation Date: 2026-05-18T12:56:03.017
-Repair Order ID: 7c69e7e6-72b8-44af-b01a-a5cf96739c19
-Customer Name: John Doe
-Problem Description: The bike has a broken brake.
-Repair Task 1: Replace brake pads, Cost: 100.0
-Repair Task 2: Replace brake cables, Cost: 200.0
-
-LOG EVENT: 2026-05-18T13:08:20.015
-Repair order updated: Creation Date: 2026-05-18T13:08:20.012
-Repair Order ID: 48be6e50-a49c-423b-ac72-cde96add3c91
-Customer Name: John Doe
-Problem Description: The bike has a broken brake.
-
-LOG EVENT: 2026-05-18T13:08:20.025
-Repair order updated: Creation Date: 2026-05-18T13:08:20.012
-Repair Order ID: 48be6e50-a49c-423b-ac72-cde96add3c91
-Customer Name: John Doe
-Problem Description: The bike has a broken brake.
-Repair Task 1: Replace brake pads, Cost: 100.0
-Repair Task 2: Replace brake cables, Cost: 200.0
-
-LOG EVENT: 2026-05-18T13:12:01.092
-Repair order updated: Creation Date: 2026-05-18T13:12:01.082
-Repair Order ID: a4a6c69b-646e-440e-a90c-d83bc9de8850
-Customer Name: John Doe
-Problem Description: The bike has a broken brake.
-
-LOG EVENT: 2026-05-18T13:12:01.092
-Repair order updated: Creation Date: 2026-05-18T13:12:01.082
-Repair Order ID: a4a6c69b-646e-440e-a90c-d83bc9de8850
-Customer Name: John Doe
-Problem Description: The bike has a broken brake.
-Repair Task 1: Replace brake pads, Cost: 100.0
-Repair Task 2: Replace brake cables, Cost: 200.0
+Total Cost: 300.0
+Status: APPROVED
 

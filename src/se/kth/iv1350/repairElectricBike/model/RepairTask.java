@@ -14,7 +14,7 @@ public class RepairTask {
      * @param description
      * Are both specified during addRepairTask.
      */
-    public RepairTask(Float cost, String description){
+    RepairTask(Float cost, String description){
         this.cost = cost;
         this.taskDescription = description;
     }

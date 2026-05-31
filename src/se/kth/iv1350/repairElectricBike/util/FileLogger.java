@@ -34,4 +34,16 @@ public class FileLogger {
         logFile.println(message);
         logFile.flush();
     }
+
+    /**
+     * Logs an exception to the log file, including a custom message and the stack trace of the exception.
+     * @param message the custom message to log
+     * @param exception the exception to log
+     */
+    public void logException(String message, Throwable exception) {
+        logFile.println("LOG EVENT: " + LocalDateTime.now());
+        logFile.println(message);
+        exception.printStackTrace(logFile);
+        logFile.flush();
+    }
 }

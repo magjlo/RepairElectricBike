@@ -1,7 +1,8 @@
 package se.kth.iv1350.repairElectricBike.integration;
 
 import java.util.*;
-import se.kth.iv1350.repairElectricBike.model.RepairOrder;
+
+import se.kth.iv1350.repairElectricBike.dataTransferObjects.RepairOrderDTO;
 
 /**
  * RepairOrderRegistry which stores approved and finished RepairOrder objects.
@@ -9,7 +10,7 @@ import se.kth.iv1350.repairElectricBike.model.RepairOrder;
  * 
  */
 public class RepairOrderRegistry {
-    private List<RepairOrder> repairOrderList;
+    private List<RepairOrderDTO> repairOrderList;
 
     /**
      * Creates an instance of RepairOrderRegistry
@@ -24,37 +25,40 @@ public class RepairOrderRegistry {
     /**
      * Adds a RepairOrder object onto the repairOrderList field of RepairOrderRegistry object.
      * 
-     * @param repairOrder is an object of RepairOrder type.
+     * @param repairOrderDTO is an object of RepairOrderDTO type.
      * 
      */
-    public void addRepairOrder(RepairOrder repairOrder){
-        this.repairOrderList.add(repairOrder);
+    public void addRepairOrder(RepairOrderDTO repairOrderDTO){
+        this.repairOrderList.add(repairOrderDTO);
     }
 
     /**
      * Finds a RepairOrder object in the repairOrderList field of RepairOrderRegistry object using string repairOrderId.
-     * @param repairOrderId is a String gield unique to each <code>RepairOrder</code> object.
-     * @return the found RepairOrder object, or null if not found.
-     * @throws DataBaseUnavailableException if the database is currently unavailable for repair order search.
+     * 
+     * @param repairOrderId is a field in the RepairOrder class and is provided by Controller.
+     * @return a RepairOrder object if found, otherwise null.
      */
-    public RepairOrder findRepairOrder(String repairOrderId) throws RepairOrderNotFoundException, DataBaseUnavailableException{
-        if(repairOrderId == "DB_UNAVAILABLE"){
-            throw new DataBaseUnavailableException("Database is currerntly unavailable for repair order search.");
-        }
-        RepairOrder foundRepairOrder = null;
-        for(RepairOrder repairOrder : this.repairOrderList){
-            if(repairOrder.getRepairOrderId().equals(repairOrderId)){
-                foundRepairOrder = repairOrder;
-                break;
+    public RepairOrderDTO findRepairOrderById(String repairOrderId){
+        for(RepairOrderDTO repairOrderDTO : this.repairOrderList){
+            if(repairOrderDTO.getRepairOrderId().equals(repairOrderId)){
+                return repairOrderDTO;
             }
         }
-        if(foundRepairOrder == null){
-            throw new RepairOrderNotFoundException(repairOrderId);
-        }
-        return foundRepairOrder;
+        return null;
     }
 
-    public List<RepairOrder> getRepairOrderList(){
-        return this.repairOrderList;
+    /**
+     * Updates a RepairOrder object in the repairOrderList field of RepairOrderRegistry object using string repairOrderId.
+     * 
+     * @param repairOrderDTO is an object of RepairOrderDTO type which is used to update the RepairOrder object in the repairOrderList.
+     * @param repairOrderId is a string that identifies the RepairOrder to be updated.
+     */
+    public void renewRepairOrderInformation(RepairOrderDTO repairOrderDTO, String repairOrderId){
+        for(int i = 0; i < this.repairOrderList.size(); i++){
+            if(this.repairOrderList.get(i).getRepairOrderId().equals(repairOrderId)){
+                this.repairOrderList.set(i, repairOrderDTO);
+                return;
+            }
+        }
     }
 }

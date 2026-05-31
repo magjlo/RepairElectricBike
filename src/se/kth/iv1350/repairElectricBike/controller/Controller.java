@@ -2,21 +2,16 @@ package se.kth.iv1350.repairElectricBike.controller;
 
 import java.util.*;
 import se.kth.iv1350.repairElectricBike.integration.RepairOrderRegistry;
-import se.kth.iv1350.repairElectricBike.integration.PhoneNumberNotFoundException;
+import se.kth.iv1350.repairElectricBike.dataTransferObjects.CustomerDTO;
+import se.kth.iv1350.repairElectricBike.exception.CustomerRegistryException;
 import se.kth.iv1350.repairElectricBike.integration.CustomerRegistry;
 import se.kth.iv1350.repairElectricBike.integration.DataBaseUnavailableException;
+import se.kth.iv1350.repairElectricBike.integration.PhoneNumberNotFoundException;
 import se.kth.iv1350.repairElectricBike.integration.Printer;
-import se.kth.iv1350.repairElectricBike.integration.RepairOrderNotFoundException;
-import se.kth.iv1350.repairElectricBike.dataTransferObjects.*;
-import se.kth.iv1350.repairElectricBike.exception.CustomerRegistryException;
-import se.kth.iv1350.repairElectricBike.exception.RepairOrderRegistryException;
 import se.kth.iv1350.repairElectricBike.model.RepairOrder;
-import se.kth.iv1350.repairElectricBike.model.RepairOrderReceipt;
-import se.kth.iv1350.repairElectricBike.model.RepairTask;
-import se.kth.iv1350.repairElectricBike.model.DiagnosticReport;
-import se.kth.iv1350.repairElectricBike.model.RepairOrderObserver;
 import se.kth.iv1350.repairElectricBike.util.FileLogger;
-
+import se.kth.iv1350.repairElectricBike.util.RepairOrderLogger;
+import se.kth.iv1350.repairElectricBike.view.RepairOrderView;
 
 /**
  * Application controller, the only one that exists.
@@ -30,9 +25,7 @@ public class Controller {
     private Printer printer;
     private CustomerDTO customerDTO;
     private RepairOrder repairOrder;
-    private RepairOrderReceipt repairOrderReceipt;
     private FileLogger  fileLogger = new FileLogger("log.txt");
-    private List<RepairOrderObserver> repairOrderObservers = new ArrayList<>();
 
     /**
     * Creates a new instance of controller
@@ -47,7 +40,6 @@ public class Controller {
     * printing and return of RepairOrder. 
     * 
     */
-
     public Controller(RepairOrderRegistry repairOrderRegistry, CustomerRegistry customerRegistry, Printer printer){
         this.repairOrderRegistry = repairOrderRegistry;
         this.customerRegistry = customerRegistry;
@@ -55,62 +47,32 @@ public class Controller {
     }
 
     /**
-     * Adds a RepairOrderObserver to the list of observers that will be notified when a repair order is updated.
-     * @param observer the RepairOrderObserver to be added to the list of observers.
-     */
-    public void addRepairOrderObserver(RepairOrderObserver observer) {
-        repairOrderObservers.add(observer);
-    }
-
-    /**
-     * Notifies all registered RepairOrderObservers of an update to the repair order by creating a RepairOrderDTO and calling the updateRepairOrder method on each observer.
-     */
-    private void notifyRepairOrderObservers() {
-        RepairOrderDTO repairOrderDTO = this.repairOrder.toDTO();
-        for (RepairOrderObserver observer : repairOrderObservers) {
-            observer.updateRepairOrderDTO(repairOrderDTO);
-        }
-    }
-
-    /**
     * Finds a customer object stored in CustomerRegistry using string phonenumber.
-    * Subsequently returns the found customer details as a CustomerDTO object.
     * 
     * @param phoneNumber is a field in the Customer class and is provided by View.
-    * 
+    * @throws CustomerRegistryException is thrown when customer with provided phone number does not exist in the registry or when registry is unavailable.
     */
+    public void findCustomer(String phoneNumber) throws CustomerRegistryException{
+        try {
+            this.customerDTO = customerRegistry.findCustomerByPhoneNumber(phoneNumber);
+            System.out.println("Customer found: " + this.customerDTO.toString()+"\n");
+            
+        } catch (PhoneNumberNotFoundException phoNumNotFoundException) {
+            System.out.println("Customer not found with phone number: " + phoneNumber);
+            throw new CustomerRegistryException("Customer does not exist in registry with phone number: " + phoneNumber);
 
-    public void findCustomerByPhoneNumber(String phoneNumber) throws CustomerRegistryException{
-        try{
-            this.customerDTO = customerRegistry.findCustomer(phoneNumber);
-        } catch(PhoneNumberNotFoundException phoNumNotFoundExc){
-            fileLogger.log("Customer does not exist in registry. " + phoNumNotFoundExc.getMessage());
-            throw new CustomerRegistryException("Customer does not exist in registry.");
-        } catch(DataBaseUnavailableException dbUnavailExc){
-            fileLogger.log("Customer registry is currently unavailable. " + dbUnavailExc.getMessage());
+        } catch (DataBaseUnavailableException dBUnavailableException) {
+            System.out.println("Customer registry is currently unavailable.");
+            fileLogger.logException("Customer data base is unreachable.", dBUnavailableException);
             throw new CustomerRegistryException("Customer registry is currently unavailable.");
         }
-        System.out.println(customerDTO.toString());
-    }
-    /**
-    * Checks the customer initialized here against the one found in customer registry.
-    * 
-    * @param customer is an instance of the Customer class.
-    * 
-    * @return the function returns a boolean confirming or denying customer registry presence.
-    * 
-    */
-
-    public void confirmCustomerDetails(Boolean areDetailsCorrect){
-        if(areDetailsCorrect){
-            System.out.println("\nCustomer details confirmed.\n");
-        } else {
-            System.out.println("\nCustomer details are not correct.\n");
-        }
     }
 
+
     /**
-    * Method is responsible for creating the initial repair order. The method returns a unique order ID.
+    * Method is responsible for creating the initial repair order. Repair order is saved to the RepairOrderRegistry and its status is set to NEWLY_CREATED.
+    * The method also adds the RepairOrder object to the repairOrderList field of RepairOrderRegistry object.
+    * Method also adds observers to the RepairOrder object which are responsible for logging and presentation of the order.
     * 
     * @param problemDescription describes the problem with the bike and is a field of RepairOrder
     * only after customer is found in customer registry.
@@ -118,13 +80,23 @@ public class Controller {
     * <code>setRepairOrderStatus("NEWLY_CREATED")</code> sets the status field of RepairOrder.
     * 
     */
+    public void createInitialRepairOrder(String problemDescription){
+        this.repairOrder = new RepairOrder(this.customerDTO, problemDescription);
+        this.repairOrder.setRepairOrderStatus("NEWLY_CREATED");
+        this.repairOrder.addRepairOrderObserver(new RepairOrderView());
+        this.repairOrder.addRepairOrderObserver(new RepairOrderLogger());
 
-    public String createInitialRepairOrderByProblemDescription(String problemDescription){
-       this.repairOrder = new RepairOrder(this.customerDTO, problemDescription);
-       repairOrder.setRepairOrderStatus("NEWLY_CREATED");
-       saveRepairOrderToRegistry();
-       notifyRepairOrderObservers();
-       return repairOrder.getRepairOrderId();
+       addNewRepairOrderToRegistry(this.repairOrder);
+
+    }
+
+    /**
+     * Prints the current RepairOrder object in the controller.
+     * 
+     */
+    public void presentCurrentRepairOrder(){
+        System.out.println("----CURRENT REPAIR ORDER-----");
+        System.out.println(this.repairOrder.repairOrderToDTO().toString());
     }
 
     /**
@@ -133,22 +105,14 @@ public class Controller {
      * @param repairOrderId is a unique string associated with a single repair order.
      * 
      */
-    public RepairOrder findRepairOrderById(String repairOrderId) throws RepairOrderRegistryException{
-        try{
-            this.repairOrder = repairOrderRegistry.findRepairOrder(repairOrderId);
-        } catch(RepairOrderNotFoundException repOrdNotFoundExc){
-            fileLogger.log("Repair order does not exist in registry. " + repOrdNotFoundExc.getMessage());
-            throw new RepairOrderRegistryException("Repair order does not exist in registry.");
-        } 
-        catch(DataBaseUnavailableException dbUnavailExc){
-            fileLogger.log("Repair order registry is currently unavailable. " + dbUnavailExc.getMessage());
-            throw new RepairOrderRegistryException("Repair order registry is currently unavailable.", dbUnavailExc);
-        }
-        return getRepairOrder();
+    public void findAndPresentCurrentRepairOrder(String repairOrderId){
+        System.out.println("----CURRENT REPAIR ORDER-----");
+        System.out.println(this.repairOrder.repairOrderToDTO().toString());
     }
-
+    
     /**
-    * Updates the RepairOrder fields with technician diagnostic report and repair tasks
+    * Updates the RepairOrder fields with technician diagnostic report and repair tasks which are added to the RepairOrder object. 
+    * Status of the order is set to READY_FOR_APPROVAL and the order is updated in the RepairOrderRegistry.
     * 
     * @param reportText is the necessary field for DiagnosticReport objects
     * 
@@ -156,81 +120,67 @@ public class Controller {
     * 
     * @param taskDescriptionList is an Arraylist of taskDescription that describes the necessary fixes (tasks).
     * 
-    * The method also saves the repair order to the repair order registry
-    * 
     */
-   
-    public void updateRepairOrder(String reportText, List<Float> costList, List<String> taskDescriptionList){
-        
-        getRepairOrder().setDiagnosticReport(new DiagnosticReport(reportText));
-        for(int i = 0; i < costList.size(); i++){
-            Float cost = costList.get(i);
-            String taskDescription = taskDescriptionList.get(i);
-            repairOrder.addRepairTask(new RepairTask(cost, taskDescription));
-        }
-        repairOrder.setRepairOrderStatus("READY_FOR_APPROVAL");
-        notifyRepairOrderObservers();
+
+    public void updateCurrentRepairOrder(String reportText, List<Float> costList, List<String> taskDescriptionList){
+        this.repairOrder.setDiagnosticReport(reportText);
+        this.repairOrder.addRepairTasks(costList, taskDescriptionList);
+        this.repairOrder.setRepairOrderStatus("READY_FOR_APPROVAL");
+        updateRepairOrderInformationInRegistry(this.repairOrder);
     }
 
     /**
-    * Sets status of RepairOrder object to APPROVED and Prints repair order.
+    * Sets status of RepairOrder object to APPROVED and prints it. Order is updated in the RepairOrderRegistry.
     * 
     */
-    public void approveRepairOrder(){
-        repairOrder.setRepairOrderStatus("APPROVED");
-        System.out.println("\nRepair order approved.\n");
-        finalizeAndPrintReceipt();
-    }
-
-    /**
-    * Prints the RepairOrderReceipt from <code>fetchReceipt()</code> to the console (System.Out)
-    * 
-    */
-    public void finalizeAndPrintReceipt(){
-        initializeRepairOrderReceipt();
-        this.printer.printRepairOrderReceipt(repairOrderReceipt);
-    }
-
-    /**
-     * Initializes the receipt based on the current repair order.
-     * 
-     */
-    private void initializeRepairOrderReceipt(){
-        this.repairOrderReceipt = printer.getRepairOrderReceipt();
-        repairOrderReceipt.createReceipt(this.repairOrder);
-    }
-
-    /**
-    * Saves a RepairOrder object to the RepairOrderRegistry, never delete.
-    * 
-    */
-    private void saveRepairOrderToRegistry(){
-        this.repairOrderRegistry.addRepairOrder(this.repairOrder);
-    }
-
-    public CustomerDTO getCustomerDTO(){
-       return this.customerDTO;
-    }
-
-    public RepairOrder getRepairOrder(){
-        return this.repairOrder;
+    public void approveAndPrintRepairOrder(){
+        this.repairOrder.setRepairOrderStatus("APPROVED");
+        updateRepairOrderInformationInRegistry(this.repairOrder);
+        this.repairOrder.printRepairOrder(this.printer);
     }
     
-    public CustomerRegistry getCustomerRegistry(){
-        return this.customerRegistry;
-    }
 
-    public RepairOrderRegistry getRepairOrderRegistry(){
-        return this.repairOrderRegistry;
-    }
-    
+    /**
+    * Sets status of RepairOrder object to COMPLETE.
+    * 
+    */
     public void setRepairOrderAsComplete(){
-        repairOrder.setRepairOrderStatus("COMPLETE");
+        this.repairOrder.setRepairOrderStatus("COMPLETE");
+        updateRepairOrderInformationInRegistry(this.repairOrder);
     }
 
+    /**
+    * Sets status of RepairOrder object to PAID.
+    * 
+    */
     public void setRepairOrderAsPaid(){
-        repairOrder.setRepairOrderStatus("PAID");
+        this.repairOrder.setRepairOrderStatus("PAID");
+        updateRepairOrderInformationInRegistry(this.repairOrder);
     } 
+    
+    /**
+     * Adds a customer to the CustomerRegistry.
+     * @param customerDTO DTO of customer to be added to the registry. DTO has to be passed from View.
+     */
+    public void addNewCustomer(CustomerDTO customerDTO){
+        this.customerRegistry.addCustomer(customerDTO);
+    }
 
+    /**
+     * Adds a new repair order to the RepairOrderRegistry.
+     * @param repairOrder is the RepairOrder object to be added to the registry.
+     */
+    public void addNewRepairOrderToRegistry(RepairOrder repairOrder){
+        this.repairOrderRegistry.addRepairOrder(repairOrder.repairOrderToDTO());
+    }
+
+    /** 
+     * Updates the information of a repair order in the RepairOrderRegistry.
+     * 
+     * @param repairOrder is the updated RepairOrder object whose information is to be updated in the registry.
+     */
+    public void updateRepairOrderInformationInRegistry(RepairOrder repairOrder){
+        this.repairOrderRegistry.renewRepairOrderInformation(repairOrder.repairOrderToDTO(), repairOrder.getRepairOrderId());
+    }
 }
 

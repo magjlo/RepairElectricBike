@@ -14,7 +14,15 @@ public class DiagnosticReport {
      * String is used for simplicity and would represent an entire report on theory.
      * 
      */
-    public DiagnosticReport(String reportText){
+     DiagnosticReport(String reportText){
         this.reportText = reportText;
+    }
+
+    /**
+     * Returns the text of the diagnostic report.
+     * @return the text of the diagnostic report.
+     */
+    public String getReportText(){
+        return this.reportText;
     }
 }

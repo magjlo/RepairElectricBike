@@ -1,37 +1,28 @@
 package se.kth.iv1350.repairElectricBike.integration;
-
-import se.kth.iv1350.repairElectricBike.model.RepairOrderReceipt;
-
 /**
  * Handles printer operations that are used at the end of the scenario after repair order is approved.
  *  
  */
 
 public class Printer {
-    private RepairOrderReceipt repairOrderReceipt;
 
     /**
      * Creates an instance/object of the Printer class.
      * 
-     * @param repairOrderReceipt is an object with a single field which is a StringBuilder.
-     * 
      */
 
-    public Printer(RepairOrderReceipt repairOrderReceipt){
-        this.repairOrderReceipt = repairOrderReceipt;
+    public Printer( ){
     }
 
     /**
      * Prints the created RepairOrderReceipt to the console (System.Out).
      * 
-     * @param repairOrderReceipt is the finished RepairOrderReceipt.
+     * @param receiptStringBuilder is the StringBuilder created in RepairOrderReceipt which 
+     * contains all information about the repair order and customer. Unfortunately, the printer can not interact with the model,
+     * and must therefore recieve the stringbuilder directly rather than the object.
      * 
      */
-    public void printRepairOrderReceipt(RepairOrderReceipt repairOrderReceipt){
-        System.out.println(this.repairOrderReceipt.getReceipt().toString());
-    }
-
-    public RepairOrderReceipt getRepairOrderReceipt(){
-        return this.repairOrderReceipt;
+    public void printRepairOrderReceipt(StringBuilder receiptStringBuilder){
+        System.out.println(receiptStringBuilder);
     }
 }

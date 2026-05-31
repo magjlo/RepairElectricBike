@@ -1,5 +1,7 @@
 package se.kth.iv1350.repairElectricBike.model;
 
+import se.kth.iv1350.repairElectricBike.dataTransferObjects.RepairOrderDTO;
+
 /**
  * Receipt class which serves to create the receipts given to customer and System.Out.
  * 
@@ -24,16 +26,17 @@ public class RepairOrderReceipt {
      * 
      */
 
-    public void createReceipt(RepairOrder repairOrder){
+    public void createReceipt(RepairOrderDTO repairOrderDTO){
         
         this.receipt.append("-----REPAIR ORDER RECEIPT-----")
         .append("\n---Repair Order---")
-        .append("\n"+repairOrder.toString())
+        .append("\n"+repairOrderDTO.toString())
         .append("---Customer details---\n")
-        .append(repairOrder.getCustomerDTO().toString());
+        .append(repairOrderDTO.getCustomerDTO().toString());
+
     }
 
-    public StringBuilder getReceipt(){
+    public StringBuilder getRepairOrderReceipt(){
         return this.receipt;
     }
 }

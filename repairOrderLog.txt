@@ -36,3 +36,41 @@ Repair Task 2: Replace brake cables, Cost: 200.0
 Total Cost: 300.0
 Status: APPROVED
 
+LOG EVENT: 2026-05-31T20:10:17.386
+Repair order updated: Creation Date: 2026-05-31T20:10:17.094
+Repair Order ID: 4a2f1b9d-57d8-4baa-89d9-ff9c4fca7ac8
+Customer Name: John Doe
+Problem Description: The bike has a broken brake.
+Total Cost: 0.0
+Status: NEWLY_CREATED
+
+LOG EVENT: 2026-05-31T20:10:17.386
+Repair order updated: Creation Date: 2026-05-31T20:10:17.094
+Repair Order ID: 4a2f1b9d-57d8-4baa-89d9-ff9c4fca7ac8
+Customer Name: John Doe
+Problem Description: The bike has a broken brake.
+Repair Task 1: Replace brake pads, Cost: 100.0
+Repair Task 2: Replace brake cables, Cost: 200.0
+Total Cost: 300.0
+Status: NEWLY_CREATED
+
+LOG EVENT: 2026-05-31T20:10:17.386
+Repair order updated: Creation Date: 2026-05-31T20:10:17.094
+Repair Order ID: 4a2f1b9d-57d8-4baa-89d9-ff9c4fca7ac8
+Customer Name: John Doe
+Problem Description: The bike has a broken brake.
+Repair Task 1: Replace brake pads, Cost: 100.0
+Repair Task 2: Replace brake cables, Cost: 200.0
+Total Cost: 300.0
+Status: READY_FOR_APPROVAL
+
+LOG EVENT: 2026-05-31T20:10:17.386
+Repair order updated: Creation Date: 2026-05-31T20:10:17.094
+Repair Order ID: 4a2f1b9d-57d8-4baa-89d9-ff9c4fca7ac8
+Customer Name: John Doe
+Problem Description: The bike has a broken brake.
+Repair Task 1: Replace brake pads, Cost: 100.0
+Repair Task 2: Replace brake cables, Cost: 200.0
+Total Cost: 300.0
+Status: APPROVED
+

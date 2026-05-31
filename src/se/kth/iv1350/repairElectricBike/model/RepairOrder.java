@@ -101,7 +101,10 @@ public class RepairOrder {
 
     /**
      * Adds a RepairTask object to the repairTaskList.
+     * Now notifies the observers of the update to the repair order.
      * 
+     * @param costList the list of costs for each repair task.
+     * @param taskDescriptionList the list of descriptions for each repair task.
      */
     public void addRepairTasks(List<Float> costList, List<String> taskDescriptionList){
 
@@ -128,6 +131,9 @@ public class RepairOrder {
         return UUID.randomUUID().toString();
     }
 
+    /**
+     * Calculates the total cost of the repair order by summing the cost of all repair tasks in the repairTaskList.
+     */
     private void calculateTotalCost(){
         float total = 0.0f;
         for(RepairTask task : repairTaskList){
@@ -136,6 +142,10 @@ public class RepairOrder {
         this.totalCost = total;
     }
 
+    /**
+     * Sets the diagnostic report for the repair order and notifies all registered observers of the update.
+     * @param reportText the text of the diagnostic report to be set for the repair order.
+     */
     public void setDiagnosticReport(String reportText){
         this.diagnosticReport = new DiagnosticReport(reportText);
         notifyRepairOrderObservers();
